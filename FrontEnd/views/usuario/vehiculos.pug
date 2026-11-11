@@ -1,0 +1,50 @@
+extends ../layout
+
+block contenido
+  section.seccion
+    h1 Mis vehículos
+    - const items = [{ href: '/usuario/panel', texto: 'Mi panel' }, { href: '/usuario/reservas', texto: 'Reservas' }, { href: '/usuario/vehiculos', texto: 'Vehículos' }]
+    include ../partials/subnav
+
+    h2 Registrar un vehículo
+    form.formulario.formulario-fila(method='post', action='/usuario/vehiculos')
+      div
+        label(for='placa') Placa
+        input#placa(name='placa', type='text', maxlength='7', required, data-placa, placeholder='ABC123')
+      div
+        label(for='tipo') Tipo
+        select#tipo(name='tipo')
+          option(value='auto') Auto o camioneta
+          option(value='moto') Moto
+      div
+        label(for='marca') Marca
+        input#marca(name='marca', type='text')
+      div
+        label(for='modelo') Modelo
+        input#modelo(name='modelo', type='text', placeholder='2022')
+      div
+        label(for='color') Color
+        input#color(name='color', type='text')
+      button.btn.btn-verde(type='submit') Guardar
+
+    h2 Registrados
+    if vehiculos.length
+      .tabla-scroll
+        table.tabla
+          thead
+            tr
+              th Placa
+              th Tipo
+              th Marca
+              th Modelo
+              th Color
+          tbody
+            each v in vehiculos
+              tr
+                td= v.placa
+                td= v.tipo
+                td= v.marca || '—'
+                td= v.modelo || '—'
+                td= v.color || '—'
+    else
+      p.vacio Todavía no hay vehículos registrados.

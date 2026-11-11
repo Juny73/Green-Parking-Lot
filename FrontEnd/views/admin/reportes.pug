@@ -1,0 +1,69 @@
+extends ../layout
+
+block contenido
+  section.seccion
+    h1 Reportes
+    - const items = [{ href: '/admin/reportes', texto: 'Reportes' }, { href: '/admin/usuarios', texto: 'Usuarios' }, { href: '/admin/tarifas', texto: 'Tarifas' }, { href: '/operador/ingresos', texto: 'Operación' }]
+    include ../partials/subnav
+
+    .metricas
+      .metrica
+        span Celdas ocupadas
+        strong #{ocupacion.ocupadas || 0} de #{ocupacion.total}
+      .metrica
+        span Celdas reservadas
+        strong= ocupacion.reservadas || 0
+      .metrica
+        span Entradas de hoy
+        strong= hoy.entradas
+      .metrica
+        span Recaudo de hoy
+        strong= dinero(hoy.recaudo)
+
+    .tres-columnas
+      div
+        h2 Vehículos frecuentes
+        if frecuentes.length
+          ul.lista
+            each f in frecuentes
+              li #[strong= f.placa] · #{f.visitas} visitas
+        else
+          p.vacio Sin datos todavía.
+      div
+        h2 Celdas más usadas
+        if celdasTop.length
+          ul.lista
+            each c in celdasTop
+              li #[strong= c.codigo] · #{c.usos} usos
+        else
+          p.vacio Sin datos todavía.
+      div
+        h2 Horas de mayor entrada
+        if horas.length
+          ul.lista
+            each h in horas
+              li #[strong #{h.hora}:00] · #{h.entradas} entradas
+        else
+          p.vacio Sin datos todavía.
+
+    h2 Últimos movimientos
+    if movimientos.length
+      .tabla-scroll
+        table.tabla
+          thead
+            tr
+              th Placa
+              th Entrada
+              th Salida
+              th Estado
+              th Total
+          tbody
+            each m in movimientos
+              tr
+                td= m.placa
+                td= fecha(m.hora_entrada)
+                td= fecha(m.hora_salida)
+                td= m.estado
+                td= m.total ? dinero(m.total) : '—'
+    else
+      p.vacio Todavía no hay movimientos.

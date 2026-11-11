@@ -1,0 +1,27 @@
+extends ../layout
+
+block contenido
+  section.seccion
+    h1 Tarifas
+    - const items = [{ href: '/admin/reportes', texto: 'Reportes' }, { href: '/admin/usuarios', texto: 'Usuarios' }, { href: '/admin/tarifas', texto: 'Tarifas' }, { href: '/operador/ingresos', texto: 'Operación' }]
+    include ../partials/subnav
+
+    p El cobro se calcula por hora o fracción con la tarifa "hora" de cada tipo de vehículo.
+    .tabla-scroll
+      table.tabla
+        thead
+          tr
+            th Vehículo
+            th Tiempo
+            th Precio
+            th
+        tbody
+          each t in tarifas
+            tr
+              td= t.tipo_vehiculo
+              td= t.tiempo
+              td
+                form.en-linea(method='post', action=`/admin/tarifas/${t.id}`)
+                  input(name='precio', type='number', min='0', step='100', value=Number(t.precio), required, aria-label=`Precio ${t.tipo_vehiculo} ${t.tiempo}`)
+                  button.btn.btn-chico(type='submit') Guardar
+              td

@@ -1,0 +1,48 @@
+extends ../layout
+
+block contenido
+  section.seccion
+    h1 Ingresos y salidas
+    - const items = [{ href: '/operador/ingresos', texto: 'Ingresos y salidas' }, { href: '/operador/celdas', texto: 'Celdas' }, { href: '/operador/incidencias', texto: 'Incidencias' }]
+    include ../partials/subnav
+
+    .dos-columnas
+      form.formulario.tarjeta-form(method='post', action='/operador/ingresos/entrada')
+        h2 Registrar entrada
+        label(for='placa-in') Placa
+        input#placa-in(name='placa', type='text', maxlength='7', required, data-placa, placeholder='ABC123')
+        label(for='tipo-in') Tipo de vehículo
+        select#tipo-in(name='tipo')
+          option(value='auto') Auto o camioneta
+          option(value='moto') Moto
+        button.btn.btn-verde(type='submit') Registrar entrada
+      form.formulario.tarjeta-form(method='post', action='/operador/ingresos/salida')
+        h2 Registrar salida
+        label(for='placa-out') Placa
+        input#placa-out(name='placa', type='text', maxlength='7', required, data-placa, placeholder='ABC123')
+        label(for='metodo') Método de pago
+        select#metodo(name='metodo_pago')
+          option(value='efectivo') Efectivo
+          option(value='tarjeta') Tarjeta
+          option(value='transferencia') Transferencia
+        button.btn.btn-amarillo(type='submit') Cobrar y registrar salida
+
+    h2 Vehículos dentro (#{activos.length})
+    if activos.length
+      .tabla-scroll
+        table.tabla
+          thead
+            tr
+              th Placa
+              th Tipo
+              th Celda
+              th Entrada
+          tbody
+            each a in activos
+              tr
+                td= a.placa
+                td= a.tipo
+                td= a.codigo
+                td= fecha(a.hora_entrada)
+    else
+      p.vacio No hay vehículos dentro en este momento.

@@ -1,0 +1,43 @@
+extends ../layout
+
+block contenido
+  section.seccion
+    h1 Incidencias
+    - const items = [{ href: '/operador/ingresos', texto: 'Ingresos y salidas' }, { href: '/operador/celdas', texto: 'Celdas' }, { href: '/operador/incidencias', texto: 'Incidencias' }]
+    include ../partials/subnav
+
+    h2 Registrar una incidencia
+    form.formulario(method='post', action='/operador/incidencias')
+      label(for='tipo') Tipo
+      select#tipo(name='tipo', required)
+        option(value='choque') Choque
+        option(value='rayon') Rayón o abolladura
+        option(value='robo') Robo
+        option(value='falla') Falla de barrera
+        option(value='tiquete') Pérdida de tiquete
+        option(value='otro') Otro
+      label(for='placa') Placa del vehículo (opcional)
+      input#placa(name='placa', type='text', maxlength='7', data-placa)
+      label(for='descripcion') Qué ocurrió
+      textarea#descripcion(name='descripcion', rows='4', required)
+      button.btn.btn-verde(type='submit') Guardar incidencia
+
+    h2 Últimas incidencias
+    if incidentes.length
+      .tabla-scroll
+        table.tabla
+          thead
+            tr
+              th Fecha
+              th Tipo
+              th Placa
+              th Descripción
+          tbody
+            each i in incidentes
+              tr
+                td= fecha(i.fecha)
+                td= i.tipo || '—'
+                td= i.placa || '—'
+                td= i.descripcion
+    else
+      p.vacio No hay incidencias registradas.

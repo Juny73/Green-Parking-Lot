@@ -1,0 +1,23 @@
+extends ../layout
+
+block contenido
+  section.seccion.estrecha.tarjeta-auth
+    h1 Crear cuenta
+    p Con tu cuenta puedes registrar vehículos y agendar celdas.
+    form.formulario(method='post', action='/auth/registro', novalidate)
+      label(for='tipo_documento') Tipo de documento
+      select#tipo_documento(name='tipo_documento', required)
+        each t in ['CC', 'CE', 'TI', 'PAS']
+          option(value=t, selected=datos && datos.tipo_documento === t)= t
+      label(for='numero_documento') Número de documento
+      input#numero_documento(name='numero_documento', type='text', inputmode='numeric', required, value=datos && datos.numero_documento)
+      label(for='nombre') Nombre completo
+      input#nombre(name='nombre', type='text', autocomplete='name', required, value=datos && datos.nombre)
+      label(for='correo') Correo electrónico
+      input#correo(name='correo', type='email', autocomplete='email', required, placeholder='nombre@correo.com', value=datos && datos.correo)
+      label(for='celular') Celular
+      input#celular(name='celular', type='tel', inputmode='numeric', required, placeholder='3001234567', value=datos && datos.celular)
+      label(for='contrasena') Contraseña
+      input#contrasena(name='contrasena', type='password', autocomplete='new-password', required, minlength='6')
+      button.btn.btn-verde(type='submit') Crear cuenta
+    p.nota ¿Ya tienes cuenta? #[a(href='/auth/login') Inicia sesión]

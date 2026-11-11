@@ -1,0 +1,57 @@
+extends ../layout
+
+block contenido
+  section.seccion
+    h1 Hola, #{usuario.nombre.split(' ')[0]}
+    - const items = [{ href: '/usuario/panel', texto: 'Mi panel' }, { href: '/usuario/reservas', texto: 'Reservas' }, { href: '/usuario/vehiculos', texto: 'Vehículos' }]
+    include ../partials/subnav
+
+    h2 Celdas del parqueadero
+    .leyenda-celdas
+      span.celda.celda-disponible Libre
+      span.celda.celda-ocupado Ocupada
+      span.celda.celda-reservado Reservada
+      span.celda.celda-mantenimiento Mantenimiento
+    .mapa-celdas
+      each e in espacios
+        .celda(class=`celda-${e.estado}`, title=`${e.codigo}: ${e.estado}`)
+          strong= e.codigo
+          small Piso #{e.piso}
+
+    .dos-columnas
+      div
+        h2 Mis vehículos
+        if vehiculos.length
+          ul.lista
+            each v in vehiculos
+              li #[strong= v.placa] · #{v.tipo}
+        else
+          p.vacio Aún no tienes vehículos. #[a(href='/usuario/vehiculos') Registra el primero].
+      div
+        h2 Mis reservas
+        if reservas.length
+          ul.lista
+            each r in reservas.slice(0, 5)
+              li Celda #{r.codigo} · #{fecha(r.fecha_reserva)} · #[em= r.estado]
+        else
+          p.vacio Sin reservas todavía. #[a(href='/usuario/reservas') Agenda una].
+
+    h2 Mi historial de estadías
+    if historial.length
+      .tabla-scroll
+        table.tabla
+          thead
+            tr
+              th Placa
+              th Entrada
+              th Salida
+              th Total
+          tbody
+            each h in historial
+              tr
+                td= h.placa
+                td= fecha(h.hora_entrada)
+                td= fecha(h.hora_salida)
+                td= h.total ? dinero(h.total) : 'En curso'
+    else
+      p.vacio Cuando uses el parqueadero, tus estadías aparecerán aquí.

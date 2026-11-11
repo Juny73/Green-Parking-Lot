@@ -1,0 +1,3 @@
+nav.subnav(aria-label='Sección')
+  each item in items
+    a(href=item.href, class=ruta === item.href ? 'activo' : '')= item.texto

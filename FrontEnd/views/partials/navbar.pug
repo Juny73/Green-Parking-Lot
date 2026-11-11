@@ -1,0 +1,20 @@
+header.barra
+  .barra-interior
+    a.logo(href='/', aria-label='Green Parking Lot, inicio')
+      span.logo-marca P
+      span.logo-texto Green Parking Lot
+    button#menu-boton.menu-boton(type='button', aria-expanded='false', aria-controls='menu', aria-label='Abrir menú')
+      i.bi.bi-list
+    nav#menu.menu(aria-label='Principal')
+      a(href='/', class=ruta === '/' ? 'activo' : '') Inicio
+      a(href='/quienes-somos', class=ruta === '/quienes-somos' ? 'activo' : '') Quiénes somos
+      a(href='/servicios', class=ruta === '/servicios' ? 'activo' : '') Servicios
+      a(href='/contacto', class=ruta === '/contacto' ? 'activo' : '') Contacto
+      if usuario
+        a.btn.btn-claro(href='/auth/destino')
+          i.bi.bi-person-circle
+          |  #{usuario.nombre.split(' ')[0]}
+        a.btn.btn-borde(href='/auth/logout') Cerrar sesión
+      else
+        a.btn.btn-borde(href='/auth/login') Iniciar sesión
+        a.btn.btn-amarillo(href='/auth/registro') Registrarse

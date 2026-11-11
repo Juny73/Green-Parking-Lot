@@ -1,0 +1,56 @@
+extends ../layout
+
+block contenido
+  section.seccion
+    h1 Usuarios
+    - const items = [{ href: '/admin/reportes', texto: 'Reportes' }, { href: '/admin/usuarios', texto: 'Usuarios' }, { href: '/admin/tarifas', texto: 'Tarifas' }, { href: '/operador/ingresos', texto: 'Operación' }]
+    include ../partials/subnav
+
+    h2 Crear operador o administrador
+    form.formulario.formulario-fila(method='post', action='/admin/usuarios')
+      div
+        label(for='rol') Rol
+        select#rol(name='rol')
+          option(value='operador') Operador
+          option(value='administrador') Administrador
+      div
+        label(for='numero_documento') Documento
+        input#numero_documento(name='numero_documento', type='text', inputmode='numeric', required)
+      div
+        label(for='nombre') Nombre completo
+        input#nombre(name='nombre', type='text', required)
+      div
+        label(for='correo') Correo
+        input#correo(name='correo', type='email', required)
+      div
+        label(for='celular') Celular
+        input#celular(name='celular', type='tel', required)
+      div
+        label(for='contrasena') Contraseña
+        input#contrasena(name='contrasena', type='password', minlength='6', required)
+      button.btn.btn-verde(type='submit') Crear
+
+    h2 Todos los usuarios (#{usuarios.length})
+    .tabla-scroll
+      table.tabla
+        thead
+          tr
+            th Documento
+            th Nombre
+            th Correo
+            th Rol
+            th Estado
+            th
+        tbody
+          each u in usuarios
+            tr
+              td= u.numero_documento || '—'
+              td= u.nombre
+              td= u.correo
+              td= u.rol
+              td
+                span.etiqueta(class=u.estado === 'activo' ? 'etiqueta-ok' : 'etiqueta-off')= u.estado
+              td
+                form(method='post', action=`/admin/usuarios/${u.id}/estado`)
+                  input(type='hidden', name='estado', value=u.estado === 'activo' ? 'inactivo' : 'activo')
+                  button.btn.btn-chico(type='submit')= u.estado === 'activo' ? 'Desactivar' : 'Activar'

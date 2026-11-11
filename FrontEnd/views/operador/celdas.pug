@@ -1,0 +1,21 @@
+extends ../layout
+
+block contenido
+  section.seccion
+    h1 Celdas
+    - const items = [{ href: '/operador/ingresos', texto: 'Ingresos y salidas' }, { href: '/operador/celdas', texto: 'Celdas' }, { href: '/operador/incidencias', texto: 'Incidencias' }]
+    include ../partials/subnav
+
+    .leyenda-celdas
+      span.celda.celda-disponible Libre
+      span.celda.celda-ocupado Ocupada
+      span.celda.celda-reservado Reservada
+      span.celda.celda-mantenimiento Mantenimiento
+    .mapa-celdas.mapa-editable
+      each e in espacios
+        form.celda(class=`celda-${e.estado}`, method='post', action=`/operador/celdas/${e.id}`)
+          strong= e.codigo
+          small Piso #{e.piso} · #{e.tipo}
+          select(name='estado', aria-label=`Estado de la celda ${e.codigo}`, onchange='this.form.submit()')
+            each s in ['disponible', 'ocupado', 'reservado', 'mantenimiento']
+              option(value=s, selected=e.estado === s)= s

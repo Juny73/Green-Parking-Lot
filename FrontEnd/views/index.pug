@@ -1,0 +1,69 @@
+extends layout
+
+mixin bahias(tipo, etiqueta, icono)
+  - const d = disp[tipo] || { disponibles: 0, total: 0 }
+  - const ocupadas = d.total - d.disponibles
+  .fila-bahias
+    .fila-titulo
+      i.bi(class=icono, aria-hidden='true')
+      strong= etiqueta
+      span #{d.disponibles} libres de #{d.total}
+    .bahias(role='img', aria-label=`${d.disponibles} celdas libres de ${d.total} para ${etiqueta}`)
+      - for (let i = 0; i < d.total; i++)
+        span.bahia(class=i < ocupadas ? 'bahia-ocupada' : 'bahia-libre')
+
+block contenido
+  if noEncontrada
+    section.seccion.centrado
+      h1 Esa página no existe
+      p Revisa la dirección o vuelve al inicio.
+      a.btn.btn-verde(href='/') Ir al inicio
+  else
+    section.hero
+      .hero-texto
+        h1 Un lugar seguro para cada vehículo
+        p Recibimos motos, autos y camionetas. Mira cuántas celdas hay libres ahora mismo, reserva la tuya y llega directo a tu espacio.
+        .hero-acciones
+          if usuario
+            a.btn.btn-amarillo(href='/auth/destino') Ir a mi panel
+          else
+            a.btn.btn-amarillo(href='/auth/login') Iniciar sesión para agendar
+            a.btn.btn-borde-oscuro(href='/auth/registro') Crear cuenta
+      .hero-tablero
+        h2 Disponibilidad ahora
+        +bahias('auto', 'Autos', 'bi-car-front-fill')
+        +bahias('moto', 'Motos', 'bi-bicycle')
+        p.leyenda
+          span.bahia.bahia-libre
+          |  Libre
+          span.bahia.bahia-ocupada
+          |  Ocupada o reservada
+
+    section.seccion
+      h2 Para toda clase de vehículos
+      .rejilla
+        article.tarjeta
+          i.bi.bi-car-front
+          h3 Autos y camionetas
+          p Celdas amplias en dos pisos, con vigilancia y registro de entrada y salida.
+        article.tarjeta
+          i.bi.bi-bicycle
+          h3 Motos
+          p Zona cubierta y separada de los autos, con tarifa propia por hora.
+        article.tarjeta
+          i.bi.bi-calendar-check
+          h3 Membresías
+          p Plan mensual o anual para quienes parquean a diario, con días gratis por recurrencia.
+        article.tarjeta
+          i.bi.bi-shield-check
+          h3 Seguridad
+          p Cada ingreso queda registrado con placa, fecha y hora. Si ocurre algo, hay evidencia.
+
+    section.seccion.banda
+      h2 ¿Cómo reservar?
+      ol.pasos
+        li Crea tu cuenta con tu documento.
+        li Registra tu vehículo con su placa.
+        li Elige fecha y hora, y recibe tu celda asignada.
+        li Llega, el operador valida tu placa y pagas al salir.
+      a.btn.btn-verde(href=usuario ? '/usuario/reservas' : '/auth/registro') Reservar mi celda

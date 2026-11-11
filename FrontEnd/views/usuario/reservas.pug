@@ -1,0 +1,47 @@
+extends ../layout
+
+block contenido
+  section.seccion
+    h1 Mis reservas
+    - const items = [{ href: '/usuario/panel', texto: 'Mi panel' }, { href: '/usuario/reservas', texto: 'Reservas' }, { href: '/usuario/vehiculos', texto: 'Vehículos' }]
+    include ../partials/subnav
+
+    h2 Agendar una celda
+    if vehiculos.length
+      form.formulario.formulario-fila(method='post', action='/usuario/reservas')
+        div
+          label(for='vehiculo_id') Vehículo
+          select#vehiculo_id(name='vehiculo_id', required)
+            each v in vehiculos
+              option(value=v.id) #{v.placa} (#{v.tipo})
+        div
+          label(for='fecha_reserva') Fecha y hora de llegada
+          input#fecha_reserva(name='fecha_reserva', type='datetime-local', required)
+        button.btn.btn-verde(type='submit') Reservar
+    else
+      p.vacio Primero #[a(href='/usuario/vehiculos') registra un vehículo] para poder reservar.
+
+    h2 Reservas hechas
+    if reservas.length
+      .tabla-scroll
+        table.tabla
+          thead
+            tr
+              th Celda
+              th Tipo
+              th Llegada
+              th Estado
+              th
+          tbody
+            each r in reservas
+              tr
+                td= r.codigo
+                td= r.tipo
+                td= fecha(r.fecha_reserva)
+                td= r.estado
+                td
+                  if r.estado === 'confirmada' || r.estado === 'pendiente'
+                    form(method='post', action=`/usuario/reservas/${r.id}/cancelar`)
+                      button.btn.btn-chico.btn-peligro(type='submit') Cancelar
+    else
+      p.vacio Aún no has hecho reservas.

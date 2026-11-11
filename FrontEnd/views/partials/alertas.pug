@@ -1,0 +1,7 @@
+if mensaje
+  .aviso(class=mensaje.tipo === 'ok' ? 'aviso-ok' : 'aviso-error', role='status', data-auto)
+    = mensaje.texto
+if errores
+  .aviso.aviso-error(role='alert')
+    each e in errores
+      p= e

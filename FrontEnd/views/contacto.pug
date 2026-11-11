@@ -1,0 +1,28 @@
+extends layout
+
+block contenido
+  section.seccion.dos-columnas
+    div
+      h1 Contacto
+      p Escríbenos y te respondemos en el día.
+      ul.datos
+        li
+          i.bi.bi-geo-alt(aria-hidden='true')
+          |  Calle 10 # 20-30, Medellín
+        li
+          i.bi.bi-telephone(aria-hidden='true')
+          |  300 000 0000
+        li
+          i.bi.bi-envelope(aria-hidden='true')
+          |  contacto@greenparking.com
+        li
+          i.bi.bi-clock(aria-hidden='true')
+          |  Todos los días, 6:00 a. m. a 10:00 p. m.
+    form.formulario(method='post', action='/contacto')
+      label(for='nombre') Nombre
+      input#nombre(name='nombre', type='text', required, value=datos && datos.nombre)
+      label(for='correo') Correo
+      input#correo(name='correo', type='email', required, placeholder='nombre@correo.com', value=datos && datos.correo)
+      label(for='mensaje') Mensaje
+      textarea#mensaje(name='mensaje', rows='5', required)= datos && datos.mensaje
+      button.btn.btn-verde(type='submit') Enviar mensaje

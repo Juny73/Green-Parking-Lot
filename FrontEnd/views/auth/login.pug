@@ -1,0 +1,13 @@
+extends ../layout
+
+block contenido
+  section.seccion.estrecha.tarjeta-auth
+    h1 Iniciar sesión
+    p Entra con tu documento para reservar y ver tus celdas.
+    form.formulario(method='post', action='/auth/login', novalidate)
+      label(for='numero_documento') Número de documento
+      input#numero_documento(name='numero_documento', type='text', inputmode='numeric', autocomplete='username', required, value=datos && datos.numero_documento)
+      label(for='contrasena') Contraseña
+      input#contrasena(name='contrasena', type='password', autocomplete='current-password', required)
+      button.btn.btn-verde(type='submit') Entrar
+    p.nota ¿Aún no tienes cuenta? #[a(href='/auth/registro') Regístrate]
