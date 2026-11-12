@@ -2,11 +2,11 @@
   "name": "green-parking-lot",
   "version": "1.0.0",
   "description": "Sistema web para parqueadero - Node.js, Express, Pug y MySQL",
-  "main": "BackEnd/server.js",
+  "main": "server.js",
   "scripts": {
-    "start": "node BackEnd/server.js",
-    "dev": "nodemon BackEnd/server.js",
-    "crear-admin": "node BackEnd/utils/crearAdmin.js"
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "crear-admin": "node utils/crearAdmin.js"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",

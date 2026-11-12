@@ -1,5 +1,5 @@
 {
-  "watch": ["BackEnd", "FrontEnd/views"],
+  "watch": [".", "../FrontEnd/views"],
   "ext": "js,pug,json",
   "ignore": ["node_modules"]
 }
